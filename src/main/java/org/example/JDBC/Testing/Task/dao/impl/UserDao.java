@@ -31,7 +31,7 @@ public class UserDao implements Dao<User>
             ResultSet rs = stm.executeQuery("select * from users where id = " + id);
             while (rs.next())
             {
-                User user = new User(id, rs.getString("username"), userDepartDao.get(rs.getInt("depart_id")).orElse(null));
+                User user = new User(id, rs.getString("username"), userDepartDao.get(rs.getInt("depart_id")).orElseThrow(SQLException::new));
                 return Optional.of(user);
             }
         }
@@ -53,7 +53,7 @@ public class UserDao implements Dao<User>
             ResultSet rs = stm.executeQuery("select * from users");
             while (rs.next())
             {
-                userList.add(new User(rs.getInt("id"), rs.getString("username"), userDepartDao.get(rs.getInt("depart_id")).orElse(null)));
+                userList.add(new User(rs.getInt("id"), rs.getString("username"), userDepartDao.get(rs.getInt("depart_id")).orElseThrow(SQLException::new)));
             }
         }
         catch (SQLException ex)
